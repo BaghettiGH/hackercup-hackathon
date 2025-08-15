@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProductsByCategory } from '../services/productService';
 import ProductPopup from '../components/ProductPopup';
+import hero_image from '../assets/hero_image.png'; 
+import banner1 from '../assets/banner1.png'; 
+import banner2 from '../assets/banner2.png'; 
 
 
 const categories = [
@@ -36,15 +39,15 @@ const HomeScreen = () => {
         <div className="home-hero-grid">
           {/* Large Hero Image */}
           <div className="home-hero-image">
-            <span className="home-hero-image-text">[HERO IMAGE]</span>
+            <img src={hero_image} alt="Promo 1" className="home-hero-image-img"/>
           </div>
           {/* Two Smaller Images */}
           <div className="home-hero-side-images">
             <div className="home-hero-side-image">
-              <span className="home-hero-side-image-text">[IMAGE]</span>
+              <img src={banner1} alt="Promo 2" className="home-hero-side-image-img"/>
             </div>
             <div className="home-hero-side-image">
-              <span className="home-hero-side-image-text">[IMAGE]</span>
+              <img src={banner2} alt="Promo 3" className="home-hero-side-image-img"/>
             </div>
           </div>
         </div>

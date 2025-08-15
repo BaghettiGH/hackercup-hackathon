@@ -378,30 +378,46 @@ body, html {
   color: #218838;
 }
 /* HomeScreen Styles */
+
 .home-hero-section {
-  max-width: 1120px;
-    margin: 0 auto;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 .home-hero-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-@media (min-width: 1024px) {
-  .home-hero-grid {
-    grid-template-columns: 2fr 1fr;
-  }
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
 }
 .home-hero-image {
-  background: #d1d5db;
   border-radius: 1rem;
-  height: 20rem;
+  min-height: 20rem;
+  max-height: 28rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  display: flex;
-  align-items: center;
+  overflow: hidden;
+  position: relative;
+}
+.home-hero-image-img {
+  width: auto;
+  height: 21rem;
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px rgba(33,136,56,0.10);
+  display: block;
+}
+.home-hero-side-image-img {
+  padding-top: 1rem;
+  width: auto;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(33,136,56,0.08);
+  display: block;
 }
 
 /* Category Filter Buttons */
