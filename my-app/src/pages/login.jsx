@@ -20,7 +20,7 @@ function Login() {
       setError(error.message);
     } else {
       console.log("Logged in user:", data.user);
-      window.location.href = "/dashboard"; // redirect
+      window.location.href = "/supplierdashboard"; // redirect
     }
     setLoading(false);
   };

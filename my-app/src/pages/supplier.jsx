@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import supabase from '../api/supabase';
 import MainLayout from './MainLayout';
+import SellerProductCard from '../components/SellerProductCard';
 
 
 function SupplierProductDashboard() {
@@ -17,25 +18,24 @@ function SupplierProductDashboard() {
     price: '',
     category: '',
     stock_quantity: '',
-    image_url: '',
-    is_active: true
+    product_image: '',
+    is_listed: true
   });
 
   useEffect(() => {
-    // fetchProducts();
     const loadData = async () => {
-    const { data: { user }, error } = await supabase.auth.getUser();
-
-    if (error) {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      
+      if (error) {
         console.error("Error getting user:", error);
         return;
-    }
-
-    if (!user) {
-      console.error("No user session found");
-      return; // or redirect to login
-    }
-
+      }
+      
+      if (!user) {
+        console.error("No user session found");
+        return; // or redirect to login
+      }
+    await fetchProducts(user.id);
     await fetchSuppliers(user.id);
   };
 
@@ -47,8 +47,8 @@ function SupplierProductDashboard() {
     try {
       const { data, error } = await supabase
         .from('products')
-        .select('*')
-        .eq('supplier_id', supplierId);
+        .select('name,price,product_image')
+        .eq('supplier_id',supplierId);
       
       if (error) throw error;
       setProducts(data || []);
@@ -77,43 +77,35 @@ function SupplierProductDashboard() {
 
   const handleSubmit = async () => {
     try {
-      const productData = {
+      const newProduct = {
         ...formData,
         price: parseFloat(formData.price),
-        stock_quantity: parseInt(formData.stock_quantity),
+        stock_quantity: parseInt(formData.stock_quantity, 10),
         supplier_id: supplierId
       };
 
-      if (editingProduct) {
-        const { error } = await supabase
-          .from('products')
-          .update(productData)
-          .eq('id', editingProduct.id);
-        
-        if (error) throw error;
-        setProducts(products.map(p => p.id === editingProduct.id ? { ...p, ...productData } : p));
-        setEditingProduct(null);
-      } else {
-        const { data, error } = await supabase
-          .from('products')
-          .insert([productData]);
-        
-        if (error) throw error;
-        if (data) setProducts([...products, ...data]);
-      }
-      
+      const { data, error } = await supabase
+        .from('products')
+        .insert([newProduct])
+        .select();
+
+      if (error) {
+        console.error('Supabase insert error:', error.message, error.details);
+      };
+
+      setProducts((prev) => [...prev, ...data]);
+      setShowAddForm(false);
       setFormData({
         name: '',
         description: '',
         price: '',
-        category: '',
         stock_quantity: '',
-        image_url: '',
-        is_active: true
+        category: '',
+        product_image: '',
+        is_listed: true
       });
-      setShowAddForm(false);
-    } catch (error) {
-      console.error('Error saving product:', error);
+    } catch (err) {
+      console.error('Error adding product:', err);
     }
   };
 
@@ -177,7 +169,6 @@ function SupplierProductDashboard() {
 
 
   return (
-    <MainLayout>
     <div className="main-page">
         <div className="supplier-profile">
             <h2 className="supplier-name">
@@ -190,8 +181,96 @@ function SupplierProductDashboard() {
             {supplier ? supplier.contact_number : ''}
             </h3>
         </div>
+        <div className="list-product-button">
+          <button onClick={()=> setShowAddForm(true)}>List Products</button>
+
+        </div>
+        <div className="products">
+      <div style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+      gap: "16px"
+    }}>
+      {products.map((product, index) => (
+        <SellerProductCard
+          key={index}
+          name={product.name}
+          price={product.price}
+          product_image={product.product_image}
+        />
+      ))}
     </div>
-    </MainLayout>
+        </div>
+    
+     {/* Modal */}
+      {showAddForm && (
+        <div className="modal-overlay" >
+          <div className="modal-content">
+            <h2>Add Product</h2>
+            <input
+              type="text"
+              placeholder="Product Name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+
+            <textarea
+              placeholder="Description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            />
+
+            <input
+              type="number"
+              placeholder="Price"
+              value={formData.price}
+              onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+            />
+
+            <input
+              type="number"
+              placeholder="Stock Quantity"
+              value={formData.stock_quantity}
+              onChange={(e) => setFormData({ ...formData, stock_quantity: e.target.value })}
+            />
+
+            <select
+              value={formData.category}
+              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            >
+              <option value="">Select Category</option>
+              <option value="wall">Wall</option>
+              <option value="tile">Tile</option>
+              <option value="block">Block</option>
+              <option value="bamboo">Bamboo</option>
+              <option value="concrete">Concrete</option>
+              <option value="insulation">Insulation</option>
+            </select>
+
+            <input
+              type="text"
+              placeholder="Image URL"
+              value={formData.product_image}
+              onChange={(e) => setFormData({ ...formData, product_image: e.target.value })}
+            />
+
+            <label>
+              <input
+                type="checkbox"
+                checked={formData.is_listed}
+                onChange={(e) => setFormData({ ...formData, is_listed: e.target.checked })}
+              />
+              Listed
+            </label>
+
+            <div style={{ marginTop: "10px" }}>
+              <button onClick={handleSubmit}>Save</button>
+              <button onClick={() => setShowAddForm(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
