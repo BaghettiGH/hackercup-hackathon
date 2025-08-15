@@ -4,10 +4,29 @@ import supabase from '../api/supabase';
 
 export default function CartScreen() {
     const [cartItems, setCartItems] = useState([]);
+    const [buyerId, setBuyerId] = useState(null);
 
     useEffect(() => {
-        fetchCart();
+        const getUser = async () => {
+            const { data: { user }, error } = await supabase.auth.getUser();
+            if (error) {
+                console.error('Error fetching user:', error);
+                return;
+            }
+            if(!user){
+                console.error('No user logged in');
+                return;
+            }
+            setBuyerId(user.id);
+        };
+        getUser();
     }, []);
+
+    useEffect(() =>{
+        if(!buyerId) return;
+
+        fetchCart();
+    },[buyerId]);
 
     async function fetchCart() {
         // 1. Get orders for the logged-in buyer
@@ -19,36 +38,35 @@ export default function CartScreen() {
                     id,
                     quantity,
                     total_price,
-                    products (
+                    product_id (
                         name,
                         product_image,
-                        suppliers (
+                        supplier_id (
                             name
                         )
                     )
                 )
             `)
-            .eq('buyer_id', 1); // change to the actual logged-in buyer's ID
+            .eq('buyer_id', buyerId);
 
         if (ordersError) {
             console.error(ordersError);
             return;
         }
 
-        // Flatten orders to extract order item details
         const items = orders.map(order => {
             const item = order.order_item_id;
             return {
-                productName: item.products.name,
-                supplierName: item.products.suppliers.name,
+                productName: item.product_id.name,
+                supplierName: item.product_id.supplier_id.name,
                 quantity: item.quantity,
                 totalPrice: item.total_price,
-                productImage: item.products.product_image
+                productImage: item.product_id.product_image
             };
         });
 
         setCartItems(items);
-    }
+    };
 
     return (
         <div>
