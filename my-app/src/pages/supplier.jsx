@@ -9,6 +9,7 @@ function SupplierProductDashboard() {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [supplier, setSupplier] = useState(null);
+  const [supplierId, setSupplierId] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -21,7 +22,24 @@ function SupplierProductDashboard() {
 
   useEffect(() => {
     // fetchProducts();
-    fetchSuppliers();
+    const loadData = async () => {
+    const { data: { user }, error } = await supabase.auth.getUser();
+
+    if (error) {
+        console.error("Error getting user:", error);
+        return;
+    }
+
+    if (!user) {
+      console.error("No user session found");
+      return; // or redirect to login
+    }
+
+    await fetchSuppliers(user.id);
+  };
+
+  loadData();
+
   }, []);
 
   const fetchProducts = async () => {
@@ -39,19 +57,17 @@ function SupplierProductDashboard() {
       setLoading(false);
     }
   };
-  const fetchSuppliers = async () => {
+  const fetchSuppliers = async (supplierId) => {
       
       try{
-        const { data: { user }, error: userError } = await supabase.auth.getUser();
-        if (userError) throw userError;
-        const supplierId = user?.id;
-        const { data, error } = await supabase
+        setSupplierId(supplierId)
+        const { data, supplierError } = await supabase
             .from('suppliers')
             .select('company_name, address, contact_number')
             .eq('id',supplierId)
             .single();
 
-            if (error) throw error;
+            if (supplierError) throw supplierError;
             setSupplier(data);
     } catch (error) {
         console.error('Error fetching supplier:', error);    
