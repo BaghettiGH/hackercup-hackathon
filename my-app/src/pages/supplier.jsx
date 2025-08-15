@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import supabase from '../api/supabase';
+import MainLayout from './MainLayout';
 
 
 function SupplierProductDashboard() {
@@ -176,6 +177,7 @@ function SupplierProductDashboard() {
 
 
   return (
+    <MainLayout>
     <div className="main-page">
         <div className="supplier-profile">
             <h2 className="supplier-name">
@@ -189,6 +191,7 @@ function SupplierProductDashboard() {
             </h3>
         </div>
     </div>
+    </MainLayout>
   );
 }
 

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import supabase from "../api/supabase";
-
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
