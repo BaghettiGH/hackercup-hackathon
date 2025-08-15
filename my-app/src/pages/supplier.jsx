@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { CircleUserRound } from 'lucide-react';
 import supabase from '../api/supabase';
-import MainLayout from './MainLayout';
-import SellerProductCard from '../components/SellerProductCard';
+import SellerProductPopup from '../components/SellerProductPopup';
+import {
+  fetchProductsBySupplier,
+  fetchSuppliers,
+  handleEdit
+} from '../services/productService';
+import circleIcon from '../assets/circle_icon.png'; 
 
 
 function SupplierProductDashboard() {
   const [products, setProducts] = useState([]);
+  const [popupProduct, setPopupProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [showAddForm, setShowAddForm] = useState(false);
@@ -25,6 +32,8 @@ function SupplierProductDashboard() {
   useEffect(() => {
     const loadData = async () => {
       const { data: { user }, error } = await supabase.auth.getUser();
+
+    await fetchSupplierDetails(user.id);
       
       if (error) {
         console.error("Error getting user:", error);
@@ -36,42 +45,30 @@ function SupplierProductDashboard() {
         return; // or redirect to login
       }
     await fetchProducts(user.id);
-    await fetchSuppliers(user.id);
   };
 
   loadData();
 
   }, []);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (supplierId) => {
     try {
-      const { data, error } = await supabase
-        .from('products')
-        .select('name,price,product_image')
-        .eq('supplier_id',supplierId);
-      
-      if (error) throw error;
-      setProducts(data || []);
+      const data = await fetchProductsBySupplier(supplierId);
+      setProducts(data);
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
       setLoading(false);
     }
   };
-  const fetchSuppliers = async (supplierId) => {
-      
-      try{
-        setSupplierId(supplierId)
-        const { data, supplierError } = await supabase
-            .from('suppliers')
-            .select('company_name, address, contact_number')
-            .eq('id',supplierId)
-            .single();
 
-            if (supplierError) throw supplierError;
-            setSupplier(data);
+  const fetchSupplierDetails = async (supplierId) => {
+    try {
+      setSupplierId(supplierId);
+      const data = await fetchSuppliers(supplierId);
+      setSupplier(data);
     } catch (error) {
-        console.error('Error fetching supplier:', error);    
+      console.error('Error fetching supplier:', error);
     }
   };
 
@@ -109,100 +106,76 @@ function SupplierProductDashboard() {
     }
   };
 
-  const handleEdit = (product) => {
-    setEditingProduct(product);
-    setFormData({
-      name: product.name,
-      description: product.description,
-      price: product.price.toString(),
-      category: product.category,
-      stock_quantity: product.stock_quantity.toString(),
-      image_url: product.image_url,
-      is_active: product.is_active
-    });
-    setShowAddForm(true);
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
-      try {
-        const { error } = await supabase
-          .from('products')
-          .delete()
-          .eq('id', id);
-        
-        if (error) throw error;
-        setProducts(products.filter(p => p.id !== id));
-      } catch (error) {
-        console.error('Error deleting product:', error);
-      }
-    }
-  };
-
-  const toggleProductStatus = async (product) => {
-    try {
-      const { error } = await supabase
-        .from('products')
-        .update({ is_active: !product.is_active })
-        .eq('id', product.id);
-      
-      if (error) throw error;
-      setProducts(products.map(p => 
-        p.id === product.id ? { ...p, is_active: !p.is_active } : p
-      ));
-    } catch (error) {
-      console.error('Error updating product status:', error);
-    }
-  };
-
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.category.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const getStockStatus = (quantity) => {
-    if (quantity === 0) return { text: 'Out of Stock', color: 'text-red-600 bg-red-100' };
-    if (quantity < 20) return { text: 'Low Stock', color: 'text-yellow-600 bg-yellow-100' };
-    return { text: 'In Stock', color: 'text-green-600 bg-green-100' };
-  };
-
-
-
   return (
     <div className="main-page">
-        <div className="supplier-profile">
+        <div className="supplier-profile-row">
+          <div className="supplier-icon-container">
+            <img src={circleIcon} alt="Supplier Icon" />
+          </div>
+          <div className="supplier-profile-details">
             <h2 className="supplier-name">
-            {supplier ? supplier.company_name : 'Loading supplier..'}
-             </h2>
+              {supplier ? supplier.company_name : 'Loading supplier..'}
+            </h2>
             <h3 className="supplier-address">
-            {supplier ? supplier.address : ''}    
+              {supplier ? supplier.address : ''}    
             </h3>
             <h3 className="supplier-number">
-            {supplier ? supplier.contact_number : ''}
+              {supplier ? supplier.contact_number : ''}
             </h3>
+          </div>
         </div>
         <div className="list-product-button">
           <button onClick={()=> setShowAddForm(true)}>List Products</button>
 
         </div>
         <div className="products">
-      <div style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-      gap: "16px"
-    }}>
-      {products.map((product, index) => (
-        <SellerProductCard
-          key={index}
-          name={product.name}
-          price={product.price}
-          product_image={product.product_image}
-        />
-      ))}
-    </div>
+          <div className="supplier-products-list">
+            {loading && <div>Loading...</div>}
+            {!loading && products.length === 0 && <div>No products found.</div>}
+            {!loading && products.map((product) => (
+              <div key={product.id || product.name} className="product-card-wrapper">
+                <div className="product-card" onClick={() => setPopupProduct(product)} style={{cursor: 'pointer'}}>
+                  <img src={product.product_image}/>
+                  <p className="price">₱{product.price}</p>
+                </div>
+                <div className="product-meta">
+                  <h3 title={product.name}>{
+                    product.name.length > 30
+                      ? product.name.slice(0, 27) + '...'
+                      : product.name
+                  }</h3>
+                  <p className="category">{product.category ? (product.category.charAt(0).toUpperCase() + product.category.slice(1)) : ''}</p>
+                </div>
+              </div>
+            ))}
+
+            {/*Seller Product Popup */}
+            {popupProduct && (
+              <SellerProductPopup
+                product={popupProduct}
+                onClose={() => setPopupProduct(null)}
+                onApply={async (updatedProduct) => {
+                  // Save changes to product
+                  try {
+                    await handleEdit(popupProduct, {
+                      price: updatedProduct.price,
+                      stock_quantity: updatedProduct.stock_quantity,
+                      is_listed: updatedProduct.is_listed
+                    });
+                    setProducts(products.map(p =>
+                      p.id === popupProduct.id ? { ...p, ...updatedProduct } : p
+                    ));
+                  } catch (error) {
+                    console.error('Error updating product:', error);
+                  }
+                  setPopupProduct(null);
+                }}
+              />
+            )}
+          </div>
         </div>
     
-     {/* Modal */}
+      {/* Modal */}
       {showAddForm && (
         <div className="modal-overlay" >
           <div className="modal-content">
@@ -271,7 +244,7 @@ function SupplierProductDashboard() {
         </div>
       )}
     </div>
-  );
-}
+    );
+};
 
 export default SupplierProductDashboard;

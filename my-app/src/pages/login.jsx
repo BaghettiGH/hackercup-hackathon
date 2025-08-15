@@ -22,17 +22,36 @@ function Login() {
 
     if (error) {
       setError(error.message);
+      setLoading(false);
+      return;
+    }
+
+    // Fetch user role from profiles table using user id
+    const userId = data.user?.id;
+    if (!userId) {
+      setError("No user ID found.");
+      setLoading(false);
+      return;
+    }
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', userId)
+      .single();
+
+    if (profileError) {
+      setError("Failed to fetch user role.");
+      setLoading(false);
+      return;
+    }
+
+    const role = profile?.role;
+    if (role === "supplier") {
+      navigate("/supplierdashboard");
+    } else if (role === "buyer") {
+      navigate("/home");
     } else {
-      console.log("Logged in user:", data.user);
-      // Assume role is stored in data.user.role
-      const role = data.user?.role;
-      if (role === "supplier") {
-        navigate("/supplierdashboard");
-      } else if (role === "buyer") {
-        navigate("/home");
-      } else {
-        navigate("/home"); // default fallback
-      }
+      setError("Unknown user role.");
     }
     setLoading(false);
   };

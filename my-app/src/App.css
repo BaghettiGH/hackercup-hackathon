@@ -1,3 +1,39 @@
+/* Supplier Profile Row Styles */
+.supplier-profile-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-top: 5rem;
+}
+
+.supplier-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 13rem;
+  height: 13rem;
+  padding-left: 5rem;
+}
+
+.supplier-profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.supplier-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+.supplier-address,
+.supplier-number {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
 body, html {
   margin-top: -3rem;
   padding: 0;
@@ -396,4 +432,88 @@ body, html {
   color: #145c2a;
   font-size: 0.95rem;
   margin: 0;
+}
+
+.supplier-products-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  padding: 0 2rem 2rem 2rem;
+}
+
+.main-page {
+  background: #fff;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+.supplier-profile {
+  background: #e9f5ee;
+  border-radius: 1rem;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 8px rgba(33,136,56,0.08);
+}
+.supplier-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #218838;
+  margin-bottom: 0.5rem;
+}
+.supplier-address, .supplier-number {
+  font-size: 1.1rem;
+  color: #145c2a;
+  margin-bottom: 0.3rem;
+}
+.list-product-button {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.list-product-button button {
+  background: #218838;
+  color: #fff;
+  border: none;
+  border-radius: 2rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.list-product-button button:hover {
+  background: #145c2a;
+}
+.products {
+  margin-bottom: 2rem;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(33,136,56,0.18);
+  padding: 2rem;
+  min-width: 320px;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.supplier-icon{
+  width: 2rem;
+  height: 2rem;
+  color: #1f2020;
+  cursor: pointer;
+  margin-right: 0.5rem;
 }
