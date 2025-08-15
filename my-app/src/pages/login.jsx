@@ -27,7 +27,7 @@ function Login() {
       // Assume role is stored in data.user.role
       const role = data.user?.role;
       if (role === "supplier") {
-        navigate("/seller");
+        navigate("/supplierdashboard");
       } else if (role === "buyer") {
         navigate("/home");
       } else {
