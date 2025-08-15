@@ -18,6 +18,7 @@ const Header = () => {
             <nav className="header-links-full">
               <Link to="/" className="header-link-full">HOME</Link>
               <Link to="/about" className="header-link-full">ABOUT US</Link>
+
             </nav>
             <div className="header-actions-full">
               <SearchBar />
@@ -45,6 +46,8 @@ const Header = () => {
                 <Clock className="icon-contact" />
                 <span>Working Hours: 8am - 9pm</span>
               </div>
+
+
             </div>
           </div>
         </div>

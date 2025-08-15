@@ -1,3 +1,6 @@
+import { useNavigate } from 'react-router-dom';
+// Function to redirect based on user role
+// Remove redirectByRole, logic now handled in handleLogin
 import React, { useState } from "react";
 import supabase from "../api/supabase";
 function Login() {
@@ -5,6 +8,7 @@ function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,7 +24,15 @@ function Login() {
       setError(error.message);
     } else {
       console.log("Logged in user:", data.user);
-      window.location.href = "/dashboard"; // redirect
+      // Assume role is stored in data.user.role
+      const role = data.user?.role;
+      if (role === "supplier") {
+        navigate("/seller");
+      } else if (role === "buyer") {
+        navigate("/home");
+      } else {
+        navigate("/home"); // default fallback
+      }
     }
     setLoading(false);
   };
