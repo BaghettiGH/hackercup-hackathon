@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { fetchProductsByCategory } from '../services/productService';
 import ProductPopup from '../components/ProductPopup';
+import { addToCart } from '../components/addToCart';
+import supabase from '../api/supabase';
 import hero_image from '../assets/hero_image.png'; 
 import banner1 from '../assets/banner1.png'; 
 import banner2 from '../assets/banner2.png'; 
@@ -22,8 +24,17 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [popupProduct, setPopupProduct] = useState(null);
+  const [buyerId, setBuyerId] = useState(null);
+
 
   useEffect(() => {
+    const getUser = async () => {
+      const { data: {user} } = await supabase.auth.getUser();
+      if (user){
+        setBuyerId(user.id);
+      };
+    }
+    getUser();
     setLoading(true);
     setError(null);
     fetchProductsByCategory(selectedCategory)
@@ -31,6 +42,14 @@ const HomeScreen = () => {
       .catch(setError)
       .finally(() => setLoading(false));
   }, [selectedCategory]);
+
+    const onAddToCart = async (productId, quantity) => {
+    if (!buyerId) {
+      console.error('No buyer logged in');
+      return;
+    }
+    console.log('Adding to cart:', { buyerId, productId, quantity });
+  };
 
   return (
     <div className="promo-container">
@@ -93,9 +112,18 @@ const HomeScreen = () => {
           <ProductPopup
             product={popupProduct}
             onClose={() => setPopupProduct(null)}
-            onAddToCart={(product, quantity) => {
+            onAddToCart={async(product, quantity) => {
               // TODO: Add to cart logic here
-              setPopupProduct(null);
+              try{
+                const totalPrice = product.price * quantity;
+                await addToCart(buyerId, product.id, quantity, totalPrice);
+                alert('Product added to cart!');
+              } catch (err){
+                console.error(err);
+              } finally{
+                setPopupProduct(null);
+              }
+              
             }}
           />
         )}
