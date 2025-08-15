@@ -4,12 +4,15 @@ import MainLayout from "../pages/MainLayout";
 import HomeScreen from "../pages/HomeScreen";
 import Login from "../pages/login";
 import SupplierProductDashboard from "../pages/supplier";
+import CartScreen from "../pages/CartScreen";
 
 // Example: Modular route config for web-specific routes
 const webRoutes = [
-	{ path: "/login", element: <Login />},
-	{ path: "/", element: <MainLayout><HomeScreen /></MainLayout>},
+	{ path: "/", element: <Login />},
+	{ path: "/home", element: <MainLayout><HomeScreen /></MainLayout>},
 	{ path: "/seller", element: <MainLayout><SupplierProductDashboard/></MainLayout> },
+	{ path: "/cart", element: <MainLayout><CartScreen /></MainLayout>}
+	
 	// Add more web-specific routes here
 ];
 
