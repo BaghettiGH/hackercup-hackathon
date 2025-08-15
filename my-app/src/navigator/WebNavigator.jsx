@@ -5,12 +5,14 @@ import HomeScreen from "../pages/HomeScreen";
 import Login from "../pages/login";
 import SupplierProductDashboard from "../pages/supplier";
 import About from "../pages/About"; 
+import CartScreen from "../pages/CartScreen";
 
 const webRoutes = [
 	{ path: "/", element: <Login />},
 	{ path: "/home", element: <MainLayout><HomeScreen/></MainLayout>},
 	{ path: "/supplierdashboard", element: <MainLayout><SupplierProductDashboard/></MainLayout> },
 	{ path: "/about", element: <MainLayout><About/></MainLayout> },
+	{ path: "/cart", element: <MainLayout><CartScreen/></MainLayout>}
 ];
 
 const WebNavigator = () => (

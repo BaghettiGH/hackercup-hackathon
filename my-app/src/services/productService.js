@@ -1,4 +1,42 @@
 import supabase from '../api/supabase';
+// Fetch cart items for a buyer
+export async function fetchCartItems(buyerId) {
+  if (!buyerId) return [];
+  const { data: orders, error: ordersError } = await supabase
+    .from('orders')
+    .select(`
+      id,
+      order_item_id (
+        id,
+        quantity,
+        total_price,
+        product_id (
+          name,
+          product_image,
+          supplier_id (
+            company_name
+          )
+        )
+      )
+    `)
+    .eq('buyer_id', buyerId);
+
+  if (ordersError) {
+    throw ordersError;
+  }
+
+  return orders.map(order => {
+    const item = order.order_item_id;
+    return {
+      productName: item.product_id.name,
+      supplierName: item.product_id.supplier_id.name,
+      quantity: item.quantity,
+      totalPrice: item.total_price,
+      productImage: item.product_id.product_image
+    };
+  });
+}
+
 // Fetch supplier details by supplierId
 export async function fetchSuppliers(supplierId) {
   if (!supplierId) return null;

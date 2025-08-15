@@ -1,0 +1,35 @@
+.cart-row{
+    background-color: #eae3e3;
+    margin-top:1rem;
+    height:auto;
+    display:flex;
+    max-height:6rem;
+    align-items:center;
+    padding:3px;
+    gap:2rem;
+    position:relative;
+}
+.cart-row-container{
+    margin-left:4rem;
+    margin-right:4rem;
+}
+.cart-page-container{
+    padding:4rem;
+    overflow-x: hidden;
+}   
+.cart-row p{
+    line-height:0.5;
+}
+.cart-row img{
+    width: '80px';
+    height: '80px';
+    border-radius:'8px';
+    object-fit: cover;
+}
+.unlist-row{
+    position:absolute;
+    top: 7px;
+    right:7px;
+    cursor:pointer;
+    color:black;
+}
