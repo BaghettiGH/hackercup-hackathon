@@ -1,7 +1,7 @@
-
 body, html {
   margin-top: -3rem;
   padding: 0;
+  background: white;
 }
 
 .promo-container {
@@ -38,7 +38,8 @@ body, html {
   font-weight: 700;
   color: #218838;
   margin-bottom: 2rem;
-  text-align: center;
+  text-align: left;
+  padding-left: 10rem;
 }
 
 /* Header Layout: Logo left, nav and contact bar beside logo, sticky at top */
@@ -292,4 +293,107 @@ body, html {
   justify-content: center;
   display: flex;
   align-items: center;
+}
+
+/* Category Filter Buttons */
+.home-products-categories {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  align-items: center;
+  padding-left: 0;
+}
+.category-btn {
+  background: #e9f5ee;
+  color: #218838;
+  border: 2px solid #218838;
+  border-radius: 2rem;
+  padding: 0.5rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.category-btn:hover {
+  background: #218838;
+  color: #fff;
+  border-color: #145c2a;
+}
+.category-btn.active {
+  background: #218838;
+  color: #fff;
+  border-color: #145c2a;
+}
+
+/* Product List and Card Styles */
+
+.home-products-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  padding: 0 10rem 2rem 10rem;
+}
+.product-card {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(33,136,56,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 260px;
+  min-width: 0;
+}
+.product-card h3 {
+  color: #218838;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.product-card p {
+  color: #145c2a;
+  font-size: 1rem;
+  margin: 0;
+}
+.product-card .price {
+  color: #145c2a;
+  font-size: 1rem;
+  margin: 0;
+  font-weight: bold;
+  text-align: right;
+}
+.product-card img {
+  width: 13rem;
+  height: 13rem;
+  border-radius: 0.5rem;
+  object-fit: cover;
+}
+
+.product-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+.product-meta {
+  margin-top: 0.5rem;
+  text-align: left;
+}
+.product-meta h3 {
+  color: #218838;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.product-meta .category {
+  color: #145c2a;
+  font-size: 0.95rem;
+  margin: 0;
 }
