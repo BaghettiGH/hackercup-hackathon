@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
+import './App.css';
 export default function CartRow({productName, supplierName, quantity, totalPrice, productImage}) {
 
 
