@@ -162,13 +162,12 @@ body, html {
   background: #fff;
   width: 100vw;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-  height: 6.3rem;
+  height: 7.5rem;
 }
 .header-logo-img {
-  height: 100%;
-  width: auto;
+  height: 80rem;
+  width: 80rem;
   display: block;
-  object-fit: contain;
   align-self: center;
 }
 .header-stack {
@@ -203,9 +202,9 @@ body, html {
   min-width: 0;
 }
 .header-logo-img {
-  height: 3rem;
+  height: 5rem;
   width: auto;
-  margin: 1rem 2rem 1rem 1rem;
+  margin: 1.25rem 2.5rem 1.25rem 1.5rem;
   display: block;
 }
 .header-nav-full {
