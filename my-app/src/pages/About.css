@@ -13,7 +13,7 @@
             padding: 20px 0;
         }
 
-        header {
+        .About-header {
             text-align: center;
             padding: 40px 0;
         }
@@ -117,3 +117,5 @@
             background-color: #ccc;
             margin-bottom: 10px;
         }
+
+       
