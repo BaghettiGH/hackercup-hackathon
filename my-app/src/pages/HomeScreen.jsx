@@ -2,7 +2,7 @@ import React from 'react';
 
 // Hero and Products Section
 const HomeScreen = () => (
-  <div>
+  <div className="promo-container">
     {/* Hero Section */}
     <section className="home-hero-section">
       <div className="home-hero-grid">

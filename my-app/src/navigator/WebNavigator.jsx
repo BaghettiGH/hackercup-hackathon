@@ -7,8 +7,8 @@ import SupplierProductDashboard from "../pages/supplier";
 
 // Example: Modular route config for web-specific routes
 const webRoutes = [
-	{ path: "/", element: <Login />},
-	{ path: "/home", element: <MainLayout><HomeScreen /></MainLayout>},
+	{ path: "/login", element: <Login />},
+	{ path: "/", element: <MainLayout><HomeScreen /></MainLayout>},
 	{ path: "/seller", element: <MainLayout><SupplierProductDashboard/></MainLayout> },
 	// Add more web-specific routes here
 ];

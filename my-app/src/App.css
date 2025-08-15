@@ -1,20 +1,65 @@
+
+body, html {
+  margin-top: -3rem;
+  padding: 0;
+}
+
+.promo-container {
+  max-width: auto;
+  margin: 0 auto;
+  padding: 6rem 1.5rem;
+}
+
+.home-hero-side-images {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.home-hero-side-image {
+  background: #d1d5db;
+  border-radius: 1rem;
+  height: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.home-hero-image-text, .home-hero-side-image-text {
+  color: #218838;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.home-products-section {
+  max-width: auto;
+  padding: -1rem 1.5rem;
+}
+.home-products-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #218838;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
 /* Header Layout: Logo left, nav and contact bar beside logo, sticky at top */
 .header-layout {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: stretch;
   position: sticky;
   top: 0;
   z-index: 100;
   background: #fff;
   width: 100vw;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  height: 6.3rem;
 }
 .header-logo-img {
-  height: 3rem;
+  height: 100%;
   width: auto;
-  margin: 1rem 2rem 1rem 1rem;
   display: block;
+  object-fit: contain;
+  align-self: center;
 }
 .header-stack {
   display: flex;
@@ -86,37 +131,65 @@
 .header-actions-full {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 .icon-cart-full, .icon-user-full {
   width: 1.5rem;
   height: 1.5rem;
-  color: #374151;
+  color: #218838;
   cursor: pointer;
   transition: color 0.2s;
 }
 .icon-cart-full:hover, .icon-user-full:hover {
-  color: #2563eb;
+  color: #145c2a;
 }
 .header-seller-link-full {
-  color: #2563eb;
-  text-decoration: underline;
-  font-size: 0.95rem;
-  margin-left: 1rem;
+  color: #145c2a;
+  font-weight: 600;
+  margin-left: 1.5rem;
+  text-decoration: none;
+  font-size: 1rem;
 }
 .header-seller-link-full:hover {
-  color: #93c5fd;
+  color: #218838;
+  text-decoration: underline;
 }
 .header-contact-bar {
   display: flex;
   align-items: center;
-  height: 3.5rem;
-  background: #1e3a8a;
+  height: 2.8rem;
+  background: #218838;
   color: #fff;
   padding: 0 2rem;
   box-sizing: border-box;
   min-width: 0;
   flex: 1;
+}
+/* SearchBar Styles */
+.searchbar-container {
+  display: flex;
+  align-items: center;
+  background: #b7e4c7;
+  border-radius: 2rem;
+  padding: 0.2rem 1rem;
+  box-shadow: 0 1px 4px rgba(0,64,0,0.08);
+  width: 35rem;
+}
+.searchbar-input {
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border-radius: 2rem;
+  width: 220px;
+  color: #145c2a;
+}
+.searchbar-icon {
+  color: #218838;
+  margin-left: 18rem;
+  font-size: 1.3rem;
+  cursor: pointer;
 }
 .header-contact-container {
   display: flex;
@@ -124,6 +197,24 @@
   align-items: center;
   width: 100%;
   font-size: 0.95rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.header-contact-row{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8rem;
+  color: #fff;
+}
+.icon-contact{
+  width: 1.2rem;
+  height: 1.2rem;
+  color: #fff;
+  margin-right: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
 }
 .header-row-full {
   display: flex;
@@ -151,7 +242,7 @@
   transition: color 0.2s;
 }
 .header-link-full:hover {
-  color: #2563eb;
+  color: #218838;
 }
 .header-actions-full {
   display: flex;
@@ -166,16 +257,15 @@
   transition: color 0.2s;
 }
 .icon-cart-full:hover, .icon-user-full:hover {
-  color: #2563eb;
+  color: #218838;
 }
 .header-seller-link-full {
-  color: #2563eb;
-  text-decoration: underline;
+  color: black;
   font-size: 0.95rem;
   margin-left: 1rem;
 }
 .header-seller-link-full:hover {
-  color: #93c5fd;
+  color: #218838;
 }
 /* HomeScreen Styles */
 .home-hero-section {
@@ -200,4 +290,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  display: flex;
+  align-items: center;
 }

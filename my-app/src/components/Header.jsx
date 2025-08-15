@@ -9,9 +9,7 @@ const Header = () => {
   const navigate = useNavigate();
   return (
     <div className="header-layout">
-      {/* Logo at the very left */}
-      <img src={logo} alt="Logo" className="header-logo-img" />
-      {/* Stack nav and contact bar vertically to the right of logo */}
+      <img src={logo} alt="GREVIA" className="header-logo-img" />
       <div className="header-stack">
         <header className="header-nav-full">
           <div className="header-row-full">
