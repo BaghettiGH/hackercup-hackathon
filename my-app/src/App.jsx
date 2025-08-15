@@ -1,6 +1,6 @@
 import './App.css';
-import AuthNavigator from './navigator/AuthNavigator';
+import WebNavigator from './navigator/WebNavigator';
 
 export default function App() {
-  return <AuthNavigator />;
+  return <WebNavigator />;
 }

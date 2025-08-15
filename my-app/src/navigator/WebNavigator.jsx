@@ -1,12 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import MainLayout from "../pages/MainLayout";
 import HomeScreen from "../pages/HomeScreen";
-import CartScreen from "../pages/CartScreen";
 
 // Example: Modular route config for web-specific routes
 const webRoutes = [
-	{ path: "/", element: <HomeScreen /> },
-	{ path: "/cart", element: <CartScreen /> },
+	{ path: "/", element: <MainLayout><HomeScreen /></MainLayout> },
 	// Add more web-specific routes here
 ];
 
