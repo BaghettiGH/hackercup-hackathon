@@ -1,0 +1,121 @@
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px 0;
+        }
+
+        .About-header {
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        h1 {
+            color: #555;
+            font-size: 2.5em;
+        }
+
+        .section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 50px;
+        }
+
+        .section img {
+            width: 45%;
+            height: 300px;
+            background-color: #ccc;
+        }
+
+        .section .content {
+            width: 45%;
+        }
+
+        .testimonial {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 50px;
+            text-align: right;
+        }
+
+        .testimonial .text {
+            width: 60%;
+            position: relative;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .testimonial .text h3 {
+            margin: 0;
+        }
+
+        .testimonial .image {
+            width: 35%;
+            height: 250px;
+            background-color: #ccc;
+        }
+        
+        .testimonial .name {
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            background: #fff;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .mission-vision {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .mission-vision .box {
+            width: 45%;
+            padding: 20px;
+        }
+
+        .about {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .team {
+            text-align: center;
+        }
+
+        .team h2 {
+            margin-bottom: 40px;
+        }
+
+        .team-members {
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .member {
+            text-align: center;
+        }
+
+        .member .photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin-bottom: 10px;
+        }
+
+       
