@@ -155,7 +155,7 @@ function SupplierProductDashboard() {
                 product={popupProduct}
                 onClose={() => setPopupProduct(null)}
                 onApply={async (updatedProduct) => {
-                  // Save changes to product
+                  
                   try {
                     await handleEdit(popupProduct, {
                       price: updatedProduct.price,

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CartRow from '../components/CartRow';
 import supabase from '../api/supabase';
+import { fetchCartItems } from '../services/productService';
 
 export default function CartScreen() {
     const [cartItems, setCartItems] = useState([]);
@@ -28,45 +29,15 @@ export default function CartScreen() {
         fetchCart();
     },[buyerId]);
 
+
     async function fetchCart() {
-        // 1. Get orders for the logged-in buyer
-        const { data: orders, error: ordersError } = await supabase
-            .from('orders')
-            .select(`
-                id,
-                order_item_id (
-                    id,
-                    quantity,
-                    total_price,
-                    product_id (
-                        name,
-                        product_image,
-                        supplier_id (
-                            name
-                        )
-                    )
-                )
-            `)
-            .eq('buyer_id', buyerId);
-
-        if (ordersError) {
-            console.error(ordersError);
-            return;
+        try {
+            const items = await fetchCartItems(buyerId);
+            setCartItems(items);
+        } catch (error) {
+            console.error(error);
         }
-
-        const items = orders.map(order => {
-            const item = order.order_item_id;
-            return {
-                productName: item.product_id.name,
-                supplierName: item.product_id.supplier_id.name,
-                quantity: item.quantity,
-                totalPrice: item.total_price,
-                productImage: item.product_id.product_image
-            };
-        });
-
-        setCartItems(items);
-    };
+    }
 
     return (
         <div>
