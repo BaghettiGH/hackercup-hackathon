@@ -5,7 +5,6 @@ import './App.css'
 import SupplierDashboard from './pages/supplier'
 import Login from './pages/login'
 import { BrowserRouter, Route, Routes} from "react-router-dom";
-import './App.css';
 import WebNavigator from './navigator/WebNavigator';
 
 export default function App() {

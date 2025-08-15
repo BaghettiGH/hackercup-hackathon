@@ -1,5 +1,6 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
+import "../App.css";
 export default function CartRow({productName, supplierName, quantity, totalPrice, productImage}) {
 
 
@@ -10,9 +11,8 @@ export default function CartRow({productName, supplierName, quantity, totalPrice
                 <img 
                     src={productImage}
                     alt={productName}
-
+                    style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '8px' }}
                 />
-
             </div>
             <div className='cart-product-info'>
                 <p className='font-semibold'>{productName}</p>
