@@ -25,7 +25,7 @@ const Header = () => {
                 onClick={() => navigate('/cart')}
               />
               <User className="icon-user-full" />
-              <Link to="/seller" className="header-seller-link-full">Go to Seller Page</Link>
+              <Link to="/supplierdashboard" className="header-seller-link-full">Go to Seller Page</Link>
             </div>
           </div>
         </header>
