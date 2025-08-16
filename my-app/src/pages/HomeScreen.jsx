@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchProductsByCategory } from '../services/productService';
+import { fetchProductsByCategory, addToCart } from '../services/productService';
 import ProductPopup from '../components/ProductPopup';
 import hero_image from '../assets/hero_image.png'; 
 import banner1 from '../assets/banner1.png'; 
@@ -22,6 +22,16 @@ const HomeScreen = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [popupProduct, setPopupProduct] = useState(null);
+  const [buyerId, setBuyerId] = useState(null);
+  useEffect(() => {
+    // Fetch logged-in user for buyerId
+    async function getUser() {
+      const { data: { user }, error } = await import('../api/supabase').then(m => m.default.auth.getUser());
+      if (error || !user) return;
+      setBuyerId(user.id);
+    }
+    getUser();
+  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -93,8 +103,18 @@ const HomeScreen = () => {
           <ProductPopup
             product={popupProduct}
             onClose={() => setPopupProduct(null)}
-            onAddToCart={(product, quantity) => {
-              // TODO: Add to cart logic here
+            onAddToCart={async (product, quantity) => {
+              if (!buyerId) {
+                alert('You must be logged in to add to cart.');
+                return;
+              }
+              try {
+                await addToCart(buyerId, product.id, quantity, product.price * quantity);
+                alert('Added to cart!');
+              } catch (err) {
+                alert('Failed to add to cart.');
+                console.error(err);
+              }
               setPopupProduct(null);
             }}
           />

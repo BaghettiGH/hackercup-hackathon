@@ -3,6 +3,7 @@ import CartRow from '../components/CartRow';
 import supabase from '../api/supabase';
 import { fetchCartItems } from '../services/productService';
 import '../components/cart.css';
+
 export default function CartScreen() {
     const [cartItems, setCartItems] = useState([]);
     const [buyerId, setBuyerId] = useState(null);
@@ -30,6 +31,7 @@ export default function CartScreen() {
     },[buyerId]);
 
 
+
     async function fetchCart() {
         try {
             const items = await fetchCartItems(buyerId);
@@ -37,32 +39,31 @@ export default function CartScreen() {
         } catch (error) {
             console.error(error);
         }
-    {cartItems.map((item, index) => (
-    <CartRow 
-        key={index} 
-        {...item} 
-        onDelete={async () => {
-            try {
-                const { error } = await supabase
-                    .from('order_items')
-                    .delete()
-                    .eq('id', item.orderItemId);
-                if (error) throw error;
-                fetchCart();
-            } catch (err) {
-                console.error('Failed to delete item:', err);
-            }
-        }} 
-    />
-))}
+    }
 
+    async function handleDelete(orderItemId) {
+        try {
+            const { error } = await supabase
+                .from('order_items')
+                .delete()
+                .eq('order_item_id', orderItemId);
+            if (error) throw error;
+            fetchCart();
+        } catch (err) {
+            console.error('Failed to delete item:', err);
+        }
     }
 
     return (
         <div className="cart-page-container">
             <h1>Your Cart</h1>
             {cartItems.map((item, index) => (
-                <CartRow key={index} {...item} />
+                <CartRow 
+                    key={index} 
+                    {...item} 
+                    orderItemId={item.orderItemId}
+                    onDelete={() => handleDelete(item.orderItemId)}
+                />
             ))}
         </div>
     );

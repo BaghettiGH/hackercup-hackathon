@@ -1,40 +1,74 @@
 import supabase from '../api/supabase';
-// Fetch cart items for a buyer
-export async function fetchCartItems(buyerId) {
-  if (!buyerId) return [];
-  const { data: orders, error: ordersError } = await supabase
+// Add product to cart for a buyer (normalized structure)
+export async function addToCart(buyerId, productId, quantity, totalPrice) {
+  // 1. Find or create a pending order for the buyer
+  let { data: order, error: orderError } = await supabase
     .from('orders')
-    .select(`
-      id,
-      order_item_id (
-        id,
-        quantity,
-        total_price,
-        product_id (
-          name,
-          product_image,
-          supplier_id (
-            company_name
-          )
-        )
-      )
-    `)
-    .eq('buyer_id', buyerId);
+    .select('id')
+    .eq('buyer_id', buyerId)
+    .eq('status', 'pending')
+    .single();
 
-  if (ordersError) {
-    throw ordersError;
+  if (orderError && orderError.code !== 'PGRST116') throw orderError; // PGRST116: No rows found
+
+  if (!order) {
+    // Create new pending order
+    const { data: newOrder, error: newOrderError } = await supabase
+      .from('orders')
+      .insert([{ buyer_id: buyerId, status: 'pending' }])
+      .select('id')
+      .single();
+    if (newOrderError) throw newOrderError;
+    order = newOrder;
   }
 
-  return orders.map(order => {
-    const item = order.order_item_id;
-    return {
-      productName: item.product_id.name,
-      supplierName: item.product_id.supplier_id.name,
-      quantity: item.quantity,
-      totalPrice: item.total_price,
-      productImage: item.product_id.product_image
-    };
-  });
+  // 2. Add item to order_items referencing order_id
+  const { data: orderItem, error: orderItemError } = await supabase
+    .from('order_items')
+    .insert([{ order_id: order.id, product_id: productId, quantity, total_price: totalPrice }])
+    .select()
+    .single();
+  if (orderItemError) throw orderItemError;
+  return orderItem;
+}
+
+// Fetch cart items for a buyer (normalized structure)
+export async function fetchCartItems(buyerId) {
+  if (!buyerId) return [];
+  // 1. Find pending order for the buyer
+  const { data: order, error: orderError } = await supabase
+    .from('orders')
+    .select('id')
+    .eq('buyer_id', buyerId)
+    .eq('status', 'pending')
+    .single();
+  if (orderError && orderError.code !== 'PGRST116') throw orderError; // PGRST116: No rows found, which is a valid case (empty cart)
+  if (!order) return [];
+
+  // 2. Fetch all order_items for that order
+  const { data: items, error: itemsError } = await supabase
+    .from('order_items')
+    .select(`
+      product_id (
+        name,
+        product_image,
+        supplier_id (
+          company_name
+        )
+      ),
+      quantity,
+      total_price
+    `)
+    .eq('order_id', order.id);
+  if (itemsError) throw itemsError;
+
+  return items.map(item => ({
+    productName: item.product_id.name,
+    supplierName: item.product_id.supplier_id.company_name,
+    quantity: item.quantity,
+    totalPrice: item.total_price,
+    productImage: item.product_id.product_image
+  }));
 }
 
 // Fetch supplier details by supplierId
