@@ -14,7 +14,7 @@ const Header = () => {
         <header className="header-nav-full">
           <div className="header-row-full">
             <nav className="header-links-full">
-              <Link to="/" className="header-link-full">HOME</Link>
+              <Link to="/home" className="header-link-full">HOME</Link>
               <Link to="/about" className="header-link-full">ABOUT US</Link>
 
             </nav>
