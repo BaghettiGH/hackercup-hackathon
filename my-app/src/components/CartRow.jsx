@@ -1,9 +1,7 @@
 import React from 'react';
 import { Trash2 } from 'lucide-react';
 import './cart.css';
-export default function CartRow({productName, supplierName, quantity, totalPrice, productImage}) {
-
-
+export default function CartRow({productName, supplierName, quantity, totalPrice, productImage, orderItemId, onDelete}) {
     return(
         <div className="cart-row-container">
         <div className='cart-row'>
@@ -20,11 +18,7 @@ export default function CartRow({productName, supplierName, quantity, totalPrice
                 <p className='order-quantity'>Quantity: {quantity}</p>
                 <p className='product-price'>₱{totalPrice}</p>
             </div>
-            <div className="unlist-row">
-                {/*Trash can icon */}
-                
-            </div>
-            <div className="unlist-row text-red-500 cursor-pointer">
+            <div className="unlist-row text-red-500 cursor-pointer" onClick={onDelete}>
                 <Trash2 size={20} />
             </div>
         </div>
