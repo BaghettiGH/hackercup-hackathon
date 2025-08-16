@@ -8,6 +8,7 @@ import {
   handleEdit
 } from '../services/productService';
 import circleIcon from '../assets/circle_icon.png'; 
+import './supplier.css';
 
 
 function SupplierProductDashboard() {
@@ -236,9 +237,9 @@ function SupplierProductDashboard() {
               Listed
             </label>
 
-            <div style={{ marginTop: "10px" }}>
-              <button onClick={handleSubmit}>Save</button>
-              <button onClick={() => setShowAddForm(false)}>Cancel</button>
+            <div className= "list-button-container" style={{ marginTop: "10px" }}>
+              <button className="submit-list-button" onClick={handleSubmit}>Save</button>
+              <button className="cancel-list-button"onClick={() => setShowAddForm(false)}>Cancel</button>
             </div>
           </div>
         </div>

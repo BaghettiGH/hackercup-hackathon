@@ -1,4 +1,5 @@
-# hackercup-hackathon
+# Grevia
+
 
 ## **Installation**
 ```
@@ -10,3 +11,6 @@ npm run dev
 - Codes obtained from ChatGPT
 - Codes obtained from Claude
 - Codes obtained from Gemini
+
+## **Database**
+- Supabase

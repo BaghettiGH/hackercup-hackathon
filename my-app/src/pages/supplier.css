@@ -1,0 +1,10 @@
+.list-button-container{
+    display:flex;
+    justify-content: space-between;
+}
+.submit-list-button{
+    color:white;
+}
+.cancel-list-button{
+    color:white;
+}
