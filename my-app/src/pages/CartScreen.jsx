@@ -48,6 +48,7 @@ export default function CartScreen() {
                     .delete()
                     .eq('id', item.orderItemId);
                 if (error) throw error;
+                setCartItems(prev => prev.filter(ci => ci,orderItemId !== item.orderItemId));
                 fetchCart();
             } catch (err) {
                 console.error('Failed to delete item:', err);
